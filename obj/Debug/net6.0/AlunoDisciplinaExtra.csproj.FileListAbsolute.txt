@@ -1,0 +1,14 @@
+C:\Users\Carlos Abraão\Desktop\AlunoDisciplinaExtra\bin\Debug\net6.0\AlunoDisciplinaExtra.exe
+C:\Users\Carlos Abraão\Desktop\AlunoDisciplinaExtra\bin\Debug\net6.0\AlunoDisciplinaExtra.deps.json
+C:\Users\Carlos Abraão\Desktop\AlunoDisciplinaExtra\bin\Debug\net6.0\AlunoDisciplinaExtra.runtimeconfig.json
+C:\Users\Carlos Abraão\Desktop\AlunoDisciplinaExtra\bin\Debug\net6.0\AlunoDisciplinaExtra.dll
+C:\Users\Carlos Abraão\Desktop\AlunoDisciplinaExtra\bin\Debug\net6.0\AlunoDisciplinaExtra.pdb
+C:\Users\Carlos Abraão\Desktop\AlunoDisciplinaExtra\obj\Debug\net6.0\AlunoDisciplinaExtra.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\Carlos Abraão\Desktop\AlunoDisciplinaExtra\obj\Debug\net6.0\AlunoDisciplinaExtra.AssemblyInfoInputs.cache
+C:\Users\Carlos Abraão\Desktop\AlunoDisciplinaExtra\obj\Debug\net6.0\AlunoDisciplinaExtra.AssemblyInfo.cs
+C:\Users\Carlos Abraão\Desktop\AlunoDisciplinaExtra\obj\Debug\net6.0\AlunoDisciplinaExtra.csproj.CoreCompileInputs.cache
+C:\Users\Carlos Abraão\Desktop\AlunoDisciplinaExtra\obj\Debug\net6.0\AlunoDisciplinaExtra.dll
+C:\Users\Carlos Abraão\Desktop\AlunoDisciplinaExtra\obj\Debug\net6.0\refint\AlunoDisciplinaExtra.dll
+C:\Users\Carlos Abraão\Desktop\AlunoDisciplinaExtra\obj\Debug\net6.0\AlunoDisciplinaExtra.pdb
+C:\Users\Carlos Abraão\Desktop\AlunoDisciplinaExtra\obj\Debug\net6.0\AlunoDisciplinaExtra.genruntimeconfig.cache
+C:\Users\Carlos Abraão\Desktop\AlunoDisciplinaExtra\obj\Debug\net6.0\ref\AlunoDisciplinaExtra.dll
