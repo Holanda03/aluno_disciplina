@@ -10,31 +10,40 @@ namespace AlunoDisciplinaExtra.aluno
 {
     internal class Aluno
     {
+        private static int matricula_default = 0;
+        
         private string nome;
+        private int matricula;
         private double nota1;
         private double nota2;
         private double media;
         private int faltas;
         private string status;
         private bool isSemestreFinalizado;
-        private Dictionary<string, Disciplina> disciplinas;
+        private Dictionary<int, Disciplina> disciplinas;
 
         public Aluno(string nome)
         {
             this.nome = nome;
+            matricula = matricula_default++;
             nota1 = 0;
             nota2 = 0;
             media = 0;
             faltas = 0;
             status = "cursando";
             isSemestreFinalizado = false;
-            disciplinas = new Dictionary<string, Disciplina>();
+            disciplinas = new Dictionary<int, Disciplina>();
         }
 
         public string Nome
         {
             get { return nome; }
             set { nome = value; }
+        }
+
+        public int Matricula
+        {
+            get { return matricula; }
         }
 
         public double Nota1
@@ -67,7 +76,7 @@ namespace AlunoDisciplinaExtra.aluno
             get { return isSemestreFinalizado; }
         }
 
-        public Dictionary<string, Disciplina> Disciplinas
+        public Dictionary<int, Disciplina> Disciplinas
         {
             get { return disciplinas; }
             set { disciplinas = value; }
@@ -98,9 +107,32 @@ namespace AlunoDisciplinaExtra.aluno
             faltas--;
         }
 
-        public string VerificarStatus(string nomeDisciplina)
+        public string VerificarStatus(int codigoDisciplina)
         {
-            return status;
+            if (disciplinas.ContainsKey(codigoDisciplina))
+            {
+                Disciplina disciplina = disciplinas[codigoDisciplina];
+
+                var porcFaltas = faltas / disciplina.CargaHoraria;
+
+                if (media >= 7 && porcFaltas <= 0.25)
+                {
+                    this.status = "Aprovado";
+                    this.isSemestreFinalizado = true;
+                }
+                else if (media < 3 || porcFaltas > 0.25)
+                {
+                    this.status = "Reprovado";
+                    this.isSemestreFinalizado = true;
+                }
+
+                var desc = "O aluno " + this.nome + " está " + this.status + " na disciplina " + disciplina.NomeDisciplina;
+
+                return desc;
+            } else
+            {
+                throw new Exception("O aluno " + nome + " não está matriculado na disciplina.");
+            }
         }
     }
 }
