@@ -14,11 +14,11 @@ namespace AlunoDisciplinaExtra.aluno
         
         private string nome;
         private int matricula;
-        private double nota1;
-        private double nota2;
-        private double media;
-        private int faltas;
-        private string status;
+        private Dictionary<Disciplina, double> nota1;
+        private Dictionary<Disciplina, double> nota2;
+        private Dictionary<Disciplina, double> media;
+        private Dictionary<Disciplina, int> faltas;
+        private Dictionary<Disciplina, string> status;
         private bool isSemestreFinalizado;
         private Dictionary<int, Disciplina> disciplinas;
 
@@ -26,11 +26,11 @@ namespace AlunoDisciplinaExtra.aluno
         {
             this.nome = nome;
             matricula = matricula_default++;
-            nota1 = 0;
-            nota2 = 0;
-            media = 0;
-            faltas = 0;
-            status = "cursando";
+            nota1 = new Dictionary<Disciplina, double>();
+            nota2 = new Dictionary<Disciplina, double>();
+            media = new Dictionary<Disciplina, double>();
+            faltas = new Dictionary<Disciplina, int>();
+            status = new Dictionary<Disciplina, string>();
             isSemestreFinalizado = false;
             disciplinas = new Dictionary<int, Disciplina>();
         }
@@ -46,27 +46,27 @@ namespace AlunoDisciplinaExtra.aluno
             get { return matricula; }
         }
 
-        public double Nota1
+        public Dictionary<Disciplina, double> Nota1
         {
             get { return nota1; }
         }
 
-        public double Nota2
+        public Dictionary<Disciplina, double> Nota2
         {
             get { return nota2; }
         }
 
-        public double Media
+        public Dictionary<Disciplina, double> Media
         {
             get { return media; }
         }
 
-        public int Faltas
+        public Dictionary<Disciplina, int> Faltas
         {
             get { return faltas; }
         }
 
-        public string Status
+        public Dictionary<Disciplina, string> Status
         {
             get { return status; }
         }
@@ -82,29 +82,108 @@ namespace AlunoDisciplinaExtra.aluno
             set { disciplinas = value; }
         }
 
-        public void AtribuirNota1(double nota)
+        public void AtribuirNota1(double nota, int codigoDisciplina)
         {
-            nota1 = nota;
+            if (nota < 0 || nota > 10)
+            {
+                throw new Exception("A nota não pode ser menor que zero ou maior que 10");
+            } else
+            {
+                if (disciplinas.ContainsKey(codigoDisciplina))
+                {
+                    Disciplina disciplina = disciplinas[codigoDisciplina];
+                    nota1.Add(disciplina, nota);
+                    //nota1.Add(disciplinas[codigoDisciplina], nota);
+                }
+                else
+                {
+                    throw new Exception("O aluno não está matriculado nessa disciplina.");
+                }
+            }
         }
 
-        public void AtribuirNota2(double nota)
+        public void AtribuirNota2(double nota, int codigoDisciplina)
         {
-            nota2 = nota;
+            if (nota < 0 || nota > 10)
+            {
+                throw new Exception("A nota não pode ser menor que zero ou maior que 10");
+            }
+            else
+            {
+                if (disciplinas.ContainsKey(codigoDisciplina))
+                {
+                    Disciplina disciplina = disciplinas[codigoDisciplina];
+                    nota2.Add(disciplina, nota);
+                    //nota2.Add(disciplinas[codigoDisciplina], nota);
+                }
+                else
+                {
+                    throw new Exception("O aluno não está matriculado nessa disciplina.");
+                }
+            }
         }
 
-        public void CalcularMedia()
+        public void CalcularMedia(int codigoDisciplina)
         {
-            media = (nota1 + nota2) / 2;
+            if (disciplinas.ContainsKey(codigoDisciplina))
+            {
+                Disciplina disciplina = disciplinas[codigoDisciplina];
+
+                if (nota1.ContainsKey(disciplina) && nota2.ContainsKey(disciplina))
+                {
+                    double n1 = nota1[disciplina];
+                    double n2 = nota2[disciplina];
+                    double m = (n1 + n2) / 2;
+                    media.Add(disciplina, m);
+                } else
+                {
+                    throw new Exception("Não foi possível calcular a média pois o aluno não possui as duas notas.");
+                }
+            } else
+            {
+                throw new Exception("O aluno não está matriculado nessa disciplina.");
+            }
         }
 
-        public void AtribuirFalta()
+        public void AtribuirFalta(int codigoDisciplina)
         {
-            faltas++;
+            if (disciplinas.ContainsKey(codigoDisciplina))
+            {
+                Disciplina disciplina = disciplinas[codigoDisciplina];
+
+                if (faltas.ContainsKey(disciplina))
+                {
+                    faltas[disciplina]++;
+                } else
+                {
+                    faltas[disciplina] = 1;
+                }
+            } else
+            {
+                throw new Exception("O aluno não está matriculado nessa disciplina.");
+            }
         }
 
-        public void AbonarFalta()
+        public void AbonarFalta(int codigoDisciplina)
         {
-            faltas--;
+            if (disciplinas.ContainsKey(codigoDisciplina))
+            {
+                Disciplina disciplina = disciplinas[codigoDisciplina];
+
+                if (faltas.ContainsKey(disciplina))
+                {
+                    if (faltas[disciplina] == 0)
+                    {
+                        throw new Exception("O aluno não possui faltas.");
+                    } else
+                    {
+                        faltas[disciplina]--;
+                    }
+                }
+            } else
+            {
+                throw new Exception("O aluno não está matriculado nessa disciplina.");
+            }
         }
 
         public string VerificarStatus(int codigoDisciplina)
@@ -113,25 +192,25 @@ namespace AlunoDisciplinaExtra.aluno
             {
                 Disciplina disciplina = disciplinas[codigoDisciplina];
 
-                var porcFaltas = faltas / disciplina.CargaHoraria;
+                var porcFaltas = faltas[disciplina] / disciplina.CargaHoraria;
 
-                if (media >= 7 && porcFaltas <= 0.25)
+                if (media[disciplina] >= 7 && porcFaltas <= 0.25)
                 {
-                    this.status = "Aprovado";
-                    this.isSemestreFinalizado = true;
+                    status[disciplina] = "aprovado";
+                    //this.isSemestreFinalizado = true;
                 }
-                else if (media < 3 || porcFaltas > 0.25)
+                else if (media[disciplina] < 3 || porcFaltas > 0.25)
                 {
-                    this.status = "Reprovado";
-                    this.isSemestreFinalizado = true;
+                    status[disciplina] = "reprovado";
+                    //this.isSemestreFinalizado = true;
                 }
 
-                var desc = "O aluno " + this.nome + " está " + this.status + " na disciplina " + disciplina.NomeDisciplina;
+                var desc = "O aluno " + nome + " está " + status[disciplina];
 
                 return desc;
             } else
             {
-                throw new Exception("O aluno " + nome + " não está matriculado na disciplina.");
+                throw new Exception("O aluno não está matriculado nessa disciplina.");
             }
         }
     }
